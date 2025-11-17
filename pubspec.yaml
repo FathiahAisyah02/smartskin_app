@@ -1,0 +1,28 @@
+name: smartskin_app
+description: SmartSkin - A Personal Assistant for Skin Type Detection and Basic Guidance
+publish_to: 'none' # This project is private (not published to pub.dev)
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # --- Added dependencies for SmartSkin ---
+  provider: ^6.0.5
+  image_picker: ^0.8.7+6
+  image: ^4.0.21
+  shared_preferences: ^2.1.0
+  # ----------------------------------------
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
