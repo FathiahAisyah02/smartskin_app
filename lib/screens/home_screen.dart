@@ -1,134 +1,158 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/skin_detection_model.dart';
+import '../models/navigation_model.dart';
 import 'skin_quiz_screen.dart';
-import 'camera_scan_screen.dart';
-import 'info_screen.dart';
+import 'main_menu_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFFFC1CC), Color(0xFFF8BBD0), Color(0xFFFCE4EC)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Welcome to SmartSkin 💕",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFAD1457),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    "Discover your skin type, scan for analysis, and learn proper skincare.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.pink.shade800,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+    final primaryColor = Theme.of(context).colorScheme.primary;
 
-                  // Buttons
-                  _buildFeatureCard(
-                    context,
-                    icon: Icons.quiz_rounded,
-                    title: "Skin Type Quiz",
-                    color: Colors.pink.shade300,
-                    screen: const SkinQuizScreen(),
-                  ),
-                  const SizedBox(height: 20),
-
-                  _buildFeatureCard(
-                    context,
-                    icon: Icons.camera_alt_rounded,
-                    title: "Scan My Skin",
-                    color: Colors.pink.shade200,
-                    screen: const CameraScanScreen(),
-                  ),
-                  const SizedBox(height: 20),
-
-                  _buildFeatureCard(
-                    context,
-                    icon: Icons.book_rounded,
-                    title: "Learn About Skincare",
-                    color: Colors.pink.shade100,
-                    screen: const InfoScreen(),
-                  ),
-
-                  const SizedBox(height: 40),
-                  const Text(
-                    "💗 Your skin deserves smart care 💗",
-                    style: TextStyle(
-                      color: Colors.pink,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
+    return Consumer2<SkinDetectionModel, NavigationModel>(
+      builder: (context, skinModel, navModel, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('SmartSkin Home'),
+            // Button to access the dedicated Main Menu screen
+            leading: IconButton(
+              icon: const Icon(Icons.apps),
+              tooltip: 'Open Main Menu',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MainMenuScreen()),
+                );
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.clear_all),
+                tooltip: 'Clear All Data',
+                onPressed: () {
+                  skinModel.clearAllData();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('All local data cleared.')),
+                  );
+                },
               ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildWelcomeCard(skinModel.userName, skinModel.userAge, primaryColor),
+                
+                const SizedBox(height: 24),
+                
+                Text(
+                  'Latest Skin Analysis',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                
+                _buildAnalysisCard(
+                  skinModel.latestSkinType, 
+                  skinModel.detectionResult, 
+                  primaryColor
+                ),
+
+                const SizedBox(height: 30),
+                
+                // Quick Action Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () => navModel.setIndex(1), // Go to Scan Tab
+                        icon: const Icon(Icons.photo_camera),
+                        label: const Text('Start Scan'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          textStyle: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          // Go directly to the Skin Type Detection Quiz flow
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => const SkinQuizScreen()),
+                          );
+                        },
+                        icon: const Icon(Icons.quiz),
+                        label: const Text('Take Quiz'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          textStyle: const TextStyle(fontSize: 16),
+                          side: BorderSide(color: primaryColor),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildWelcomeCard(String name, int age, Color primaryColor) {
+    return Card(
+      elevation: 4,
+      color: primaryColor.withAlpha(26), // Soft background tint
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Welcome Back,', style: TextStyle(fontSize: 18, color: primaryColor)),
+            const SizedBox(height: 4),
+            Text(name, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            const Divider(height: 20),
+            Row(
+              children: [
+                Icon(Icons.person_outline, color: primaryColor, size: 20),
+                const SizedBox(width: 8),
+                Text(age > 0 ? '$age years old' : 'Age not set', style: const TextStyle(fontSize: 16)),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildFeatureCard(BuildContext context,
-      {required IconData icon,
-      required String title,
-      required Color color,
-      required Widget screen}) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => screen),
-        );
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.pink.shade100.withValues(alpha: 0.5),
-
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 25),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildAnalysisCard(String type, String detail, Color primaryColor) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: Colors.white, size: 28),
-            const SizedBox(width: 15),
+            const Text('Skin Type:', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey)),
+            const SizedBox(height: 4),
             Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+              type,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: type == 'Unknown' ? Colors.red : primaryColor,
               ),
             ),
+            const Divider(height: 24),
+            const Text('Detailed Summary:', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey)),
+            const SizedBox(height: 8),
+            Text(detail, style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),

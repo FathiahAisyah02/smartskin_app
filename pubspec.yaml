@@ -1,28 +1,30 @@
-name: smartskin_app
+name: smartskin_app # <-- MISSING FIELD ADDED HERE
 description: SmartSkin - A Personal Assistant for Skin Type Detection and Basic Guidance
 publish_to: 'none' # This project is private (not published to pub.dev)
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: '>=3.0.0 <4.0.0' # Updated SDK constraint for modern Flutter
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
-  # --- Added dependencies for SmartSkin ---
-  provider: ^6.0.5
-  image_picker: ^0.8.7+6
-  image: ^4.0.21
-  shared_preferences: ^2.1.0
+  # --- ESSENTIAL FOR SMART SKIN PROJECT ---
+  provider: ^6.1.1       # For State Management
+  camera: ^0.10.5+9      # To access the device camera and take pictures
+  path: ^1.8.3           # To construct file paths
+  path_provider: ^2.1.1  # To get the temporary directory path for saving images
+  shared_preferences: ^2.2.2 # For simple data persistence
+  image: ^4.0.21         # For potential ML image pre-processing
   # ----------------------------------------
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^3.0.0 
 
 flutter:
   uses-material-design: true
