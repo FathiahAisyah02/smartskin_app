@@ -6,16 +6,18 @@ import 'scan_screen.dart';
 import 'guidance_screen.dart'; // Skincare Advice Tab
 import 'history_screen.dart';
 import 'profile_screen.dart';
+import 'skin_insight_screen.dart'; // Import MainMenuScreen
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
-  // The screens assigned to the 5 bottom navigation tabs
+  // The screens assigned to the 5 bottom navigation tabs, including MainMenuScreen
   final List<Widget> _screens = const [
     HomeScreen(),
     ScanScreen(),
     GuidanceScreen(), // Skincare Advice Tab
     HistoryScreen(),
+    SkinInsightsScreen(), // Main Menu added as a new screen
     ProfileScreen(),
   ];
 
@@ -54,6 +56,11 @@ class MainScreen extends StatelessWidget {
                 icon: Icon(Icons.history_outlined),
                 activeIcon: Icon(Icons.history),
                 label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.menu_outlined),
+                activeIcon: Icon(Icons.menu),
+                label: 'SkinInsights', // Added "Main Menu" label
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline),

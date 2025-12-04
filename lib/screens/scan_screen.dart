@@ -15,7 +15,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   late CameraController _controller;
   late List<CameraDescription> _cameras;
-  late Future<void> _initializeControllerFuture;
+  Future<void>? _initializeControllerFuture;
 
   @override
   void initState() {
@@ -116,7 +116,7 @@ class _ScanScreenState extends State<ScanScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Skin Scan')),
       body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
+        future: _initializeControllerFuture!,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!_controller.value.isInitialized) {

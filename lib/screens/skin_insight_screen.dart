@@ -1,63 +1,45 @@
 import 'package:flutter/material.dart';
 import 'ingredient_suggestion_screen.dart';
 import 'educational_module_screen.dart';     
-import 'skin_quiz_screen.dart';
 
-class MainMenuScreen extends StatelessWidget {
-  const MainMenuScreen({super.key});
+
+class SkinInsightsScreen extends StatelessWidget {  // Renamed to SkinInsightsScreen
+  const SkinInsightsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main Menu')),
+      appBar: AppBar(title: const Text('Skin Insights')),  // Updated AppBar title
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Welcome to Smartskin',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
-                textAlign: TextAlign.center,
-              ),
               const SizedBox(height: 50),
               
-              // 1. SKIN TYPE DETECTION QUIZ button
-              _buildMainMenuButton(
-                context,
-                text: 'TAKE SKIN TYPE DETECTION QUIZ',
-                onPressed: () {
-                    Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (c) => const SkinQuizScreen())
-                    );
-                },
-              ),
-              const SizedBox(height: 20),
-
-              // 2. SKINCARE INGREDIENT SUGGESTION button
+              // 1. SKINCARE INGREDIENT SUGGESTION button
               _buildMainMenuButton(
                 context,
                 text: 'SKINCARE INGREDIENT SUGGESTION',
                 onPressed: () {
-                    Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (c) => const IngredientSuggestionScreen())
-                    );
+                  Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (c) => const IngredientSuggestionScreen())
+                  );
                 },
               ),
               const SizedBox(height: 20),
 
-              // 3. EDUCATIONAL MODULE button
+              // 2. EDUCATIONAL MODULE button
               _buildMainMenuButton(
                 context,
                 text: 'EDUCATIONAL MODULE',
                 onPressed: () {
-                    Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (c) => const EducationalModuleScreen())
-                    );
+                  Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (c) => const EducationalModuleScreen())
+                  );
                 },
               ),
             ],

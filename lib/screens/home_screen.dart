@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/skin_detection_model.dart';
 import '../models/navigation_model.dart';
 import 'skin_quiz_screen.dart';
-import 'main_menu_screen.dart';
+import 'skin_insight_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
               tooltip: 'Open Main Menu',
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const MainMenuScreen()),
+                  MaterialPageRoute(builder: (context) => const SkinInsightsScreen()),
                 );
               },
             ),

@@ -19,6 +19,7 @@ dependencies:
   path_provider: ^2.1.1  # To get the temporary directory path for saving images
   shared_preferences: ^2.2.2 # For simple data persistence
   image: ^4.0.21         # For potential ML image pre-processing
+  image_picker: ^1.0.5
   # ----------------------------------------
 
 dev_dependencies:
